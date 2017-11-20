@@ -1,0 +1,3 @@
+{
+"base_order_views": "id,integer,not null | created_by, varchar, null | created_on, timestamp, null |"
+}
