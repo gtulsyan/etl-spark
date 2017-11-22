@@ -7,21 +7,21 @@ private[blackbuck] sealed trait Configuration
 
 private[blackbuck] object Configurations {
 
-  case class DBConfiguration(db: String,
-                             schema: String,
+  case class DBConfiguration(database: String,
                              hostname: String,
                              portNo: Int,
                              userName: String,
                              password: String,
                              preLoadCmd:Option[String] = None,
-                             postLoadCmd:Option[String] = None)  {
+                             postLoadCmd:Option[String] = None) extends Configuration {
 
     override def toString: String = {
       s"""{
-         |
-         |   Database Name: $db,
-         |
-         |   Schema: $schema
+         |   Database Type: $database,
+         |   hostname: $hostname,
+         |   port no: $portNo,
+         |   username: $userName,
+         |   password: $password
          |}""".stripMargin
     }
   }

@@ -16,7 +16,7 @@ object SqlParser {
       s"""{
          |   name: $name,
          |   type: $dataType
-         |   nullConstraint: $isNotNull
+         |   isNotNull: $isNotNull
          |}""".stripMargin
     }
   }
@@ -71,12 +71,11 @@ object SqlParser {
                   j - 1
 
               }
-              listTypes.update(i, SQLDataType(column.getColumnName.toString, column.getDatatype.toString, notNull))
+
             }
-      {
+      listTypes.update(i, SQLDataType(column.getColumnName.toString, column.getDatatype.toString, notNull))
         i += 1
         i - 1
-      }
     }
     Tuple2(pStmt.getTargetTable.toString, listTypes)
     //    if (pStmt.getTableConstraints.size > 0) {

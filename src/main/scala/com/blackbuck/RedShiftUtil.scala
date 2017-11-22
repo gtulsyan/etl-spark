@@ -26,13 +26,13 @@ object RedShiftUtil {
   }
 
   def getJDBCUrl(conf: DBConfiguration): String = {
-    s"jdbc:redshift://${conf.hostname}:${conf.portNo}/${conf.db}"
+    s"jdbc:redshift://${conf.hostname}:${conf.portNo}/${conf.database}"
   }
 
 
   def execute(query: String): Unit = {
     try {
-      val conf: DBConfiguration = DBConfiguration("prod_bb_replica","","jarvis-prod.cdw4xlqaiotu.ap-southeast-1.redshift.amazonaws.com",
+      val conf: DBConfiguration = DBConfiguration("prod_bb_replica","jarvis-prod.cdw4xlqaiotu.ap-southeast-1.redshift.amazonaws.com",
         5439,"lookerread","B1hiewd86yu")
       val con = getConnection(conf)
       val stmt = con.createStatement()
@@ -58,13 +58,14 @@ object RedShiftUtil {
     s"""
        |begin;
        |
-       |CREATE TABLE $newtable (LIKE $table);
+       |CREATE TABLE IF NOT EXISTS $newtable (LIKE $table);
        |
        |copy $newtable from 's3://kafkaredshift/temp/$table/'
        |iam_role 'arn:aws:iam::735317561518:role/kafka_redshift'
        |format as json 'auto'
        |timeformat as 'auto'
-       |dateformat as 'auto';
+       |dateformat as 'auto'
+       |COMPUPDATE OFF STATUPDATE OFF;
        |
        |update ${table} set ${columnsAdded}
        |from ${newtable} s where ${table}.id = s.id;

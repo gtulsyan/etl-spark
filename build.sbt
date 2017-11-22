@@ -16,14 +16,15 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-java-sdk" % "1.11.228",
   "com.amazonaws" % "aws-java-sdk-s3" % "1.11.228",
   "com.amazonaws" % "aws-java-sdk-core" % "1.11.228",
-  "org.apache.hadoop" % "hadoop-aws" % "2.6.0"
+  "org.apache.hadoop" % "hadoop-aws" % "2.6.0",
+  "com.101tec" % "zkclient" % "0.10"
+
 
 
 )
 
-unmanagedJars in Compile += file("lib/RedshiftJDBC42-1.2.10.1009.jar")
+unmanagedBase := baseDirectory.value / "lib"
 
-unmanagedJars in Compile += file("lib/gsp.jar")
 
 
 assemblyMergeStrategy in assembly ~= { (old) =>
